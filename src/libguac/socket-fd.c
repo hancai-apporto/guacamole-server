@@ -107,6 +107,7 @@ ssize_t guac_socket_fd_write(guac_socket* socket,
         /* Use write() for all other platforms */
         retval = write(data->fd, buffer, count);
 #endif
+        socket->bytes_size_sent += count;
 
         /* Record errors in guac_error */
         if (retval < 0) {

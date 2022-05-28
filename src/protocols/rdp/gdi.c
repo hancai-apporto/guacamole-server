@@ -376,6 +376,7 @@ void guac_rdp_gdi_mark_frame(rdpContext* context, int starting) {
 
     guac_client* client = ((rdp_freerdp_context*) context)->client;
     guac_rdp_client* rdp_client = (guac_rdp_client*) client->data;
+    guac_socket* socket = client->__owner->socket;
 
     /* The server supports defining explicit frames */
     rdp_client->frames_supported = 1;
@@ -397,7 +398,15 @@ void guac_rdp_gdi_mark_frame(rdpContext* context, int starting) {
     /* Flush a new frame if the client is ready for it */
     if (time_elapsed >= guac_client_get_processing_lag(client)) {
         guac_common_display_flush(rdp_client->display);
-        guac_client_end_multiple_frames(client, rdp_client->frames_received);
+
+        size_t bytes_size_sent = 0;
+
+        guac_socket_instruction_begin(socket);
+        bytes_size_sent = socket->bytes_size_sent;
+        socket->bytes_size_sent = 0;
+        guac_socket_instruction_end(socket);
+
+        guac_client_end_multiple_frames(client, rdp_client->frames_received, bytes_size_sent);
         guac_socket_flush(client->socket);
         rdp_client->frames_received = 0;
     }

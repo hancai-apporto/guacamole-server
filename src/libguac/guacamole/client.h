@@ -548,7 +548,7 @@ int guac_client_end_frame(guac_client* client);
  * @return
  *     Zero on success, non-zero on error.
  */
-int guac_client_end_multiple_frames(guac_client* client, int frames);
+int guac_client_end_multiple_frames(guac_client* client, int frames, int size);
 
 /**
  * Initializes the given guac_client using the initialization routine provided

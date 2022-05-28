@@ -109,6 +109,11 @@ struct guac_socket {
     int __keep_alive_enabled;
 
     /**
+     * Received frame size
+     */
+    size_t bytes_size_sent;
+
+    /**
      * The keep-alive thread.
      */
     pthread_t __keep_alive_thread;

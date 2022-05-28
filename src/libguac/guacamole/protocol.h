@@ -378,7 +378,7 @@ int guac_protocol_send_select(guac_socket* socket, const char* protocol);
  *     Zero on success, non-zero on error.
  */
 int guac_protocol_send_sync(guac_socket* socket, guac_timestamp timestamp,
-        int frames);
+        int frames, int size);
 
 /* OBJECT INSTRUCTIONS */
 

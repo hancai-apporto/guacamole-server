@@ -474,6 +474,7 @@ static int guac_rdp_handle_connection(guac_client* client) {
 
     guac_rdp_client* rdp_client = (guac_rdp_client*) client->data;
     guac_rdp_settings* settings = rdp_client->settings;
+    guac_socket* socket = client->__owner->socket;
 
     /* Init random number generator */
     srandom(time(NULL));
@@ -620,8 +621,15 @@ static int guac_rdp_handle_connection(guac_client* client) {
         /* Flush frame only if successful and an RDP frame is not known to be
          * in progress */
         else if (!rdp_client->frames_supported || rdp_client->frames_received) {
+            size_t bytes_size_sent = 0;
+
+            guac_socket_instruction_begin(socket);
+            bytes_size_sent = socket->bytes_size_sent;
+            socket->bytes_size_sent = 0;
+            guac_socket_instruction_end(socket);
+
             guac_common_display_flush(rdp_client->display);
-            guac_client_end_multiple_frames(client, rdp_client->frames_received);
+            guac_client_end_multiple_frames(client, rdp_client->frames_received, bytes_size_sent);
             guac_socket_flush(client->socket);
             rdp_client->frames_received = 0;
         }
