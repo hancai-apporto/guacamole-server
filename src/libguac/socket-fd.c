@@ -95,6 +95,8 @@ ssize_t guac_socket_fd_write(guac_socket* socket,
     guac_socket_fd_data* data = (guac_socket_fd_data*) socket->data;
     const char* buffer = buf;
 
+    socket->bytes_size_sent += count;
+
     /* Write until completely written */
     while (count > 0) {
 
@@ -107,7 +109,6 @@ ssize_t guac_socket_fd_write(guac_socket* socket,
         /* Use write() for all other platforms */
         retval = write(data->fd, buffer, count);
 #endif
-        socket->bytes_size_sent += count;
 
         /* Record errors in guac_error */
         if (retval < 0) {

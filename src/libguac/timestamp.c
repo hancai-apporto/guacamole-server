@@ -35,7 +35,7 @@ guac_timestamp guac_timestamp_current() {
 
     /* Get current time, monotonically increasing */ 
 #ifdef CLOCK_MONOTONIC
-    clock_gettime(CLOCK_MONOTONIC, &current);
+    clock_gettime(CLOCK_REALTIME, &current);
 #else
     clock_gettime(CLOCK_REALTIME, &current);
 #endif    
