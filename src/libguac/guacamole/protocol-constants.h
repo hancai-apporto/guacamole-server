@@ -47,7 +47,7 @@
  *
  * @see GUAC_INSTRUCTION_MAX_LENGTH 
  */
-#define GUAC_PROTOCOL_BLOB_MAX_LENGTH 6048
+#define GUAC_PROTOCOL_BLOB_MAX_LENGTH 900
 
 /**
  * The name of the layer parameter defining the number of simultaneous points
